@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -90,18 +91,22 @@ fun Game(worldMap: WorldMap, modifier: Modifier = Modifier) {
     Column(modifier = Modifier
         .padding(0.dp)
         .fillMaxSize()) {
-//        Text(text = "Location: (${locations[title].latitude}, ${locations[title].longitude})")
-//        Button(onClick = {
-//            title = (title + 1) % 3
-//        }) {
-//            Text("Click Me (Title is $title)")
-//        }
-        gradientSky(modifier = Modifier.weight(.4f))
-        WorldMapComposable(title, locations[title], modifier.fillMaxHeight(.6f))
+
+        gradientSky(modifier = Modifier.fillMaxWidth())
+        WorldMapComposable(title, locations[title], modifier.fillMaxHeight(.9f))
+        Row(modifier = Modifier.weight(.2f)) {
+            Text(text = "Location: (${locations[title].latitude}, ${locations[title].longitude})")
+            Button(onClick = {
+                title = (title + 1) % 3
+            }) {
+                Text("Click Me (Title is $title)")
+            }
+        }
 
     }
 }
 
+// Needs parrallex markers
 @Composable
 fun gradientSky(modifier: Modifier = Modifier) {
     Image(
@@ -116,7 +121,7 @@ fun gradientSky(modifier: Modifier = Modifier) {
                     )
                 )
             )
-            .fillMaxSize()
+            //.fillMaxSize()
     )
 }
 
