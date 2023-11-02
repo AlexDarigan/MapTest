@@ -20,7 +20,7 @@ class DefaultLocationClient(
 ): LocationClient {
 
     @SuppressLint("MissingPermission")
-    override fun getLocationUpdates(interval: Long): Flow<Location> {
+    override fun getLocationUpdates(interval: Long, callback: (Location) -> Unit): Flow<Location> {
         return callbackFlow {
 
             // Check permissions are granted
@@ -45,7 +45,8 @@ class DefaultLocationClient(
                 override fun onLocationResult(result: LocationResult) {
                     super.onLocationResult(result)
                     result.locations.lastOrNull()?.let { location: Location ->
-                        launch { send(location) }
+                        callback(location)
+                        //launch { send(location) }
                     }
                 }
             }

@@ -11,9 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 class LocationService: Service() {
 
@@ -47,24 +44,24 @@ class LocationService: Service() {
             .setContentTitle("Tracking location...")
             .setContentText("Location: null")
             .setSmallIcon(R.drawable.ic_launcher_background)
-            .setOngoing(true)
+          //  .setOngoing(true)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Start location updates
-        val tenSeconds = 10000L
-        locationClient
-            .getLocationUpdates(tenSeconds)
-            .catch { e -> e.printStackTrace() }
-            .onEach { location ->
-                val lat = location.latitude.toString() //.takeLast(3)
-                val lon = location.longitude.toString() //.takeLast(3)
-                val updatedNotification = notification.setContentText(
-                    "Location ($lat, $lon)"
-                )
-                notificationManager.notify(1, updatedNotification.build())
-            }
-            .launchIn(serviceScope)
+//        val tenSeconds = 10000L
+//        locationClient
+//            .getLocationUpdates(tenSeconds)
+//            .catch { e -> e.printStackTrace() }
+//            .onEach { location ->
+//                val lat = location.latitude.toString() //.takeLast(3)
+//                val lon = location.longitude.toString() //.takeLast(3)
+//                val updatedNotification = notification.setContentText(
+//                    "Location ($lat, $lon)"
+//                )
+//                notificationManager.notify(1, updatedNotification.build())
+//            }
+//            .launchIn(serviceScope)
 
         // Start notification services
         startForeground(1, notification.build())

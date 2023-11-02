@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocationClient {
 
-    fun getLocationUpdates(interval: Long): Flow<Location>
+    fun getLocationUpdates(interval: Long, callback: (Location) -> Unit): Flow<Location>
 
     class LocationException(message: String): Exception()
 }
