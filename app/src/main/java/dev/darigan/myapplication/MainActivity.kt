@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -93,9 +95,11 @@ fun Game(worldMap: WorldMap, modifier: Modifier = Modifier) {
         .fillMaxSize()) {
 
         gradientSky(modifier = Modifier.fillMaxWidth())
-        WorldMapComposable(title, locations[title], modifier.fillMaxHeight(.9f))
+        WorldMapComposable(title, location, modifier.fillMaxHeight(.9f))
         Row(modifier = Modifier.weight(.2f)) {
-            Text(text = "Location: (${locations[title].latitude}, ${locations[title].longitude})")
+            Text(text = "Location: (${location.latitude}, ${location.longitude})",
+                modifier = Modifier.background(MaterialTheme.colorScheme.background),
+                color = MaterialTheme.colorScheme.primary)
             Button(onClick = {
                 title = (title + 1) % 3
             }) {

@@ -10,7 +10,6 @@
   },
   {
     "featureType": "administrative",
-    "elementType": "all",
     "stylers": [
       {
         "visibility": "off"
@@ -18,17 +17,31 @@
     ]
   },
   {
-    "featureType": "administrative",
-    "elementType": "all",
+    "featureType": "landscape.man_made",
     "stylers": [
       {
+        "visibility": "on"
+      }
+    ]
+  },
+  { "featureType": "landscape.man_made",
+    "elementType": "labels",
+      "stylers": [
+      {
         "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.natural",
+    "stylers": [
+      {
+        "color": "#23c417"
       }
     ]
   },
   {
     "featureType": "poi.business",
-    "elementType": "all",
     "stylers": [
       {
         "visibility": "off"
@@ -37,7 +50,6 @@
   },
   {
     "featureType": "poi.government",
-    "elementType": "all",
     "stylers": [
       {
         "visibility": "off"
@@ -46,28 +58,37 @@
   },
   {
     "featureType": "poi.medical",
-    "elementType": "all",
     "stylers": [
       {
         "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "stylers": [
+      {
+        "color": "#6f6e63"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#e7e023"
+      },
+      {
+        "weight": 4
       }
     ]
   },
   {
     "featureType": "transit",
-    "elementType": "all",
     "stylers": [
       {
         "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape",
-    "elementType": "all",
-    "stylers": [
-      {
-        "color": "#78e885"
       }
     ]
   }
