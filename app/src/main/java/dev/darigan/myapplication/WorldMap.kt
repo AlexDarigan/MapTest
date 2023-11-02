@@ -20,7 +20,7 @@ class WorldMap(private val locationClient: LocationClient): ViewModel() {
 
     init {
         val second = 1000L
-        locationClient.getLocationUpdates(second * 5, callback =
+        locationClient.getLocationUpdates(second, callback =
         {   newLocation: Location ->
                 _location.update { LatLng(
                     newLocation.latitude,newLocation.longitude
