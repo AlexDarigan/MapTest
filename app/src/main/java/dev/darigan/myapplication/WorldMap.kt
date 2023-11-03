@@ -16,7 +16,11 @@ import kotlinx.coroutines.flow.update
 class WorldMap(private val locationClient: LocationClient): ViewModel() {
     private val _location = MutableStateFlow(LatLng(0.0, 0.0))
     val location: StateFlow<LatLng> = _location.asStateFlow()
-    val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    private val _count = MutableStateFlow(0)
+    val count: StateFlow<Int> = _count.asStateFlow()
+
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     init {
         val second = 1000L
@@ -25,6 +29,7 @@ class WorldMap(private val locationClient: LocationClient): ViewModel() {
                 _location.update { LatLng(
                     newLocation.latitude,newLocation.longitude
                 ) }
+            _count.update { _count.value + 1 }
         }).launchIn(scope)
     }
 }
