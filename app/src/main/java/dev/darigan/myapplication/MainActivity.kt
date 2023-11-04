@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,34 +16,37 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.GoogleMapFactory
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import dev.darigan.myapplication.ui.theme.MyApplicationTheme
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -108,46 +112,71 @@ fun Game(worldMap: WorldMap, modifier: Modifier = Modifier) {
 // Needs parrallex markers
 @Composable
 fun gradientSky(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(id = R.drawable.sky),
-        contentDescription = "Background" ,
-        modifier = modifier
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(255, 255, 255),
-                        Color(255, 255, 255, 0)
-                    )
-                )
-            )
-            //.fillMaxSize()
+    var sizeImage by remember { mutableStateOf(IntSize.Zero) }
+
+    // https://stackoverflow.com/questions/63871706/gradient-over-image-in-jetpack-compose
+    val gradient = Brush.verticalGradient(
+        colors = listOf(Color.Transparent, Color.White),
+        startY = sizeImage.height.toFloat() / 3,
+        endY = sizeImage.height.toFloat()
     )
+
+    Box {
+        Image(
+            painter = painterResource(id = R.drawable.sky),
+            contentDescription = "Background",
+            modifier = modifier.onGloballyPositioned {
+                sizeImage = it.size
+            }
+        )
+        Box(modifier = Modifier
+            .matchParentSize()
+            .background(gradient))
+    }
 }
 
 @Composable
 fun WorldMapComposable(title: Int, location: LatLng, modifier: Modifier = Modifier) {
+    var sizeImage by remember { mutableStateOf(IntSize.Zero) }
 
-    GoogleMap(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(255, 255, 255),
-                        Color(255, 255, 255, 0)
-                    )
+    // https://stackoverflow.com/questions/63871706/gradient-over-image-in-jetpack-compose
+    val gradient = Brush.verticalGradient(
+        colors = listOf(Color(255, 255, 255, 0), Color(255, 255, 255)),
+        startY = sizeImage.height.toFloat() / 3,
+        endY = sizeImage.height.toFloat()
+    )
+
+    Box {
+        GoogleMap(
+            modifier = modifier
+                .fillMaxWidth()
+                .onGloballyPositioned {
+                    sizeImage = it.size
+                },
+            cameraPositionState = CameraPositionState(
+                position = CameraPosition(
+                    location,
+                    18f,
+                    67.5f,
+                    314f
                 )
             ),
-        cameraPositionState = CameraPositionState(position = CameraPosition(location, 18f, 67.5f, 114f)),
-        properties = MapProperties(
-            mapType = MapType.NORMAL,
-            mapStyleOptions = MapStyleOptions.loadRawResourceStyle(
-            LocalContext.current, R.raw.style_json)
-        )) {
-        Marker(
-            state = MarkerState(position = location),
-            title = "Your Location $title",
-            snippet = "My Location"
-        )
+            properties = MapProperties(
+                mapType = MapType.NORMAL,
+                mapStyleOptions = MapStyleOptions.loadRawResourceStyle(
+                    LocalContext.current, R.raw.style_json
+                )
+            )
+        ) {
+            Marker(
+                state = MarkerState(position = location),
+                title = "Your Location $title",
+                snippet = "$location",
+            )
+        }
+        Box(modifier = Modifier
+            .matchParentSize()
+            .rotate(180F)
+            .background(gradient))
     }
 }
